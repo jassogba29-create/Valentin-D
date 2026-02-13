@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Cœur pour Toi ❤️</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;700&display=swap');
+
+        :root {
+            --primary-color: #e91e63;
+            /* Rose profond pour l'amour */
+            --secondary-color: #fce4ec;
+            /* Rose très clair */
+            --dark-bg: #1a1a1a;
+            /* Noir très sombre */
+            --text-light: #f5f5f5;
+            /* Texte clair */
+            --text-dark: #333;
+            /* Texte sombre (pour contraste sur sections claires) */
+            --heart-color: #ff4d6d;
+            /* Rouge cœur */
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            line-height: 1.6;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            /* Alignement en haut pour le défilement */
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Style pour l'overlay de mot de passe */
+        #password-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            text-align: center;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        #password-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+            /* Empêche les interactions quand caché */
+        }
+
+        #password-overlay h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        #password-input {
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 2px solid var(--primary-color);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            font-size: 1.1rem;
+            text-align: center;
+            margin-bottom: 15px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        #password-input:focus {
+            border-color: var(--heart-color);
+        }
+
+        #password-button {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 10px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        #password-button:hover {
+            background-color: var(--heart-color);
+            transform: scale(1.05);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            padding: 40px 20px;
+            margin: 0 auto;
+            box-sizing: border-box;
+            background-color: rgba(0, 0, 0, 0.6);
+            /* Fond légèrement transparent */
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            margin-top: 50px;
+            margin-bottom: 50px;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.8rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+        }
+
+        header h1 .heart-icon {
+            color: var(--heart-color);
+            margin-left: 10px;
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            margin-top: 10px;
+        }
+
+        .section {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+
+        .section h2 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .date {
+            font-weight: bold;
+            color: var(--heart-color);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            text-align: center;
+        }
+
+        .declaration {
+            background-color: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-left: 5px solid var(--primary-color);
+            margin-bottom: 20px;
+            border-radius: 8px;
+            font-style: italic;
+            position: relative;
+        }
+
+        .declaration::before {
+            content: "«";
+            position: absolute;
+            left: 10px;
+            top: 5px;
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.1);
+        }
+
+        .declaration::after {
+            content: "»";
+            position: absolute;
+            right: 10px;
+            bottom: -20px;
+            font-size: 3rem;
+            color: rgba(255, 255, 255, 0.1);
+        }
+
+        .declaration p {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .declaration.her {
+            border-left-color: var(--heart-color);
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            gap: 20px;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-date {
+            min-width: 120px;
+            text-align: center;
+            font-weight: bold;
+            color: var(--primary-color);
+            position: relative;
+        }
+
+        .timeline-date::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--primary-color);
+            z-index: 0;
+            transform: translateX(-50%);
+        }
+
+        .timeline-date span {
+            display: inline-block;
+            background-color: var(--dark-bg);
+            padding: 5px 10px;
+            border-radius: 5px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .timeline-content {
+            flex-grow: 1;
+            background-color: rgba(255, 255, 255, 0.08);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .timeline-content h3 {
+            color: var(--secondary-color);
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+
+        .timeline-content p {
+            font-size: 0.95rem;
+            color: var(--text-light);
+        }
+
+        .hands-image {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .hands-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+            border: 3px solid var(--primary-color);
+        }
+
+        .special-message {
+            background-color: var(--heart-color);
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            margin-top: 40px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .special-message h3 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            margin-top: 0;
+        }
+
+        .special-message p {
+            font-size: 1.1rem;
+            margin-bottom: 0;
+        }
+
+        /* Effet de coeurs flottants */
+        .heart {
+            position: absolute;
+            color: var(--heart-color);
+            font-size: 20px;
+            user-select: none;
+            animation: float 5s linear infinite;
+            pointer-events: none;
+            /* Pour ne pas bloquer les clics */
+            opacity: 0.7;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-10vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Media Queries pour la responsivité */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.8rem;
+            }
+
+            header p {
+                font-size: 1rem;
+            }
+
+            .section h2 {
+                font-size: 2rem;
+            }
+
+            .declaration p {
+                font-size: 0.9rem;
+            }
+
+            .timeline-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .timeline-item:nth-child(even) {
+                flex-direction: column;
+            }
+
+            .timeline-date {
+                min-width: auto;
+                margin-bottom: 10px;
+            }
+
+            .timeline-date::before {
+                display: none;
+            }
+
+            /* Enlève la ligne verticale sur mobile */
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="password-overlay">
+        <h2>Entrez le code secret, mon cœur ❤️</h2>
+        <input type="password" id="password-input" placeholder="Ton code ici...">
+        <button id="password-button">Accéder</button>
+        <p style="color: grey; margin-top: 20px;">(Indice: Date à laquelle on est rentré en relation Ex:020606)</p>
+    </div>
+
+    <audio id="billie-eillish-lovely" loop preload="auto">
+        <source src="lovely.mp3" type="audio/mpeg">
+
+    </audio>
+
+    <div class="container" id="main-content" style="display: none;">
+        <header>
+            <h1>Joyeuse Saint-Valentin, Mon Amour ! <span class="heart-icon">❤️</span></h1>
+            <p>Le 14 février... et chaque jour est une fête avec toi.</p>
+            <p style="font-size: 1.5rem; color: var(--heart-color);">
+                Le 17 MAI 2025, tu as dit OUI, et ça a changé ma vie. ✨
+            </p>
+        </header>
+
+        <div class="section">
+            <h2>Notre Histoire...</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date"><span>2 Mai 2022</span></div>
+                    <div class="timeline-content">
+                        <h3>Moi : L'entrée discrète</h3>
+                        <p>_Le 2 mai 2022, à 23h07… une minute ordinaire devenue inoubliable ⏰✨. C’est là que t’es
+                            entrée dans ma vie, discrètement, mais pour longtemps (et j’le savais pas encore) 🌙💬.
+                            Depuis ce jour, t’as pris une place que personne d’autre n’a pu toucher ❤️‍🩹. Bestie, amie,
+                            lumière, trouble-fête de mon cœur (et un peu mon bordel préféré) ⚡️.
+                            J’sais, t’as levé le drapeau blanc du “juste amis” en 2022 ✋💔. Mais j’te jure, j’suis pas
+                            venu relancer le jeu — juste te dire ce que mon cœur n’a jamais désinstallé (spoiler : toi)
+                            📲❤️.
+                            Je t’aime, pas avec des conditions, pas pour obtenir… mais juste parce que c’est comme ça
+                            ♾️. Je t’aime trop, et même si c’est pas réciproque, c’est pas grave 🤷‍♂️, Parce que je
+                            préfère t’aimer en silence que te perdre en criant 🤐➡️🫂.
+                            Alors ouais, mon cœur te fait un poème en douce ✍️, Mais c’est pas un piège… c’est juste un
+                            “je t’aime” sincère, version moi (et version vrai) ❤️‍🔥._</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date"><span>Ton Retour</span></div>
+                    <div class="timeline-content">
+                        <h3>Elle : Plus qu'une meilleure amie</h3>
+                        <p>Bn toi et moi on se connait depuis un bn bout de temps et tt et de simples amis on est devenu
+                            meilleurs amis😌 Je t'aime énormément et je tiens énormément à tw Mais avant c'était de
+                            l'amour qu'une meilleure amie devrait avoir pour son meilleur ami Mais mtn c'est plus
+                            pareil. Tu es tjrs là quand j'en ai besoin bn je vais pas dire tt ce que tu sais déjà  Bn
+                            pour faire court Monsieur je t'aime</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date"><span>Ma Question</span></div>
+                    <div class="timeline-content">
+                        <h3>Moi : Le "Nous" commence</h3>
+                        <p>Bon… maintenant que je sais que c’est réciproque (j’ai rechargé mon cœur à 100% depuis que je
+                            l’ai su) ❤️⚡ j’me dis… pourquoi pas faire un petit pas en plus ?
+                            Toi & moi. En vrai. Pas juste des regards, pas juste des messages Mais un moment à deux —
+                            genre sortie, rires, cœur qui bat trop vite et tout 🫶✨
+                            Alors j’te pose ça là, sans pression mais avec beaucoup d’envie : Tu sors avec moi ? (et pas
+                            juste pour une balade hein) Mais pour un vrai “nous” qui commence ? ♾️❤️‍🔥</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-date"><span>Ton Oui</span></div>
+                    <div class="timeline-content">
+                        <h3>Elle : "Oui Monsieur 😊❤️"</h3>
+                        <p>Le plus beau "Oui" de ma vie, celui qui a fait basculer notre histoire le 17 mai 2025.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hands-image">
+                <h2>Nos Mains Jointes <span class="heart-icon">🫶</span></h2>
+                <p>Ces mains qui se sont cherchées, trouvées, et qui ne veulent plus se lâcher.</p>
+                <img src="mains.jpg" alt="Nos mains jointes"
+                    onerror="this.onerror=null;this.src='https://via.placeholder.com/600x400/1a1a1a/e91e63?text=Imaginez+nos+mains+jointes+ici';">
+                <p style="font-size: 0.8rem; color: grey; margin-top: 10px;"></p>
+            </div>
+        </div>
+
+        <div class="section special-message">
+            <h3>Un Mot Spécial Pour Toi, Mon Amour...</h3>
+            <p>Je sais que ces derniers temps n'ont pas été faciles, et que j'ai pu te décevoir par mes silences ou mes
+                maladresses. Les cours, les imprévus, la douleur... rien n'est une excuse pour ne pas avoir été là comme
+                tu le méritais, surtout dans les moments difficiles.</p>
+            <p>Je suis désolé(e) si mon manque de réaction t'a blessée, ou si tu t'es sentie seule. Chaque jour, je
+                repense à tout ce que tu m'as confié, et je regrette de ne pas avoir su trouver les mots justes, le
+                réconfort dont tu avais besoin.</p>
+            <p>Sache que même si j'ai été maladroit(e), mon cœur n'a jamais cessé de penser à toi et de vouloir ton
+                bien. Je suis là, et je veux me montrer à la hauteur de l'amour et de la confiance que tu m'as accordés.
+            </p>
+            <p>Cette Saint-Valentin est l'occasion de te dire que je tiens plus que tout à toi, à nous, et que je suis
+                prêt(e) à tout faire pour retrouver la complicité et la sérénité que nous avions. Donne-moi
+                l'opportunité de te le prouver. Je t'aime, profondément.</p>
+        </div>
+    </div>
+
+    <script>
+    // On attend que toute la page soit chargée
+    window.onload = function() {
+        const correctPassword = '170525';
+        const passwordInput = document.getElementById('password-input');
+        const passwordButton = document.getElementById('password-button');
+        const passwordOverlay = document.getElementById('password-overlay');
+        const mainContent = document.getElementById('main-content');
+        
+        // On prépare la musique
+        const lovelyMusic = new Audio('lovely.mp3');
+        lovelyMusic.loop = true;
+
+        passwordButton.addEventListener('click', () => {
+            console.log("Tentative de connexion..."); // Pour voir si ça réagit dans la console (F12)
+            
+            if (passwordInput.value === correctPassword) {
+                // On lance la musique
+                lovelyMusic.play().then(() => {
+                    console.log("Musique lancée !");
+                }).catch(e => {
+                    console.log("L'audio a été bloqué par le navigateur", e);
+                });
+
+                // On cache l'entrée
+                passwordOverlay.style.opacity = '0';
+                setTimeout(() => {
+                    passwordOverlay.style.display = 'none';
+                    mainContent.style.display = 'block';
+                }, 500);
+            } else {
+                alert('Code incorrect. Réessaie, mon cœur ! 😉');
+                passwordInput.value = '';
+            }
+        });
+
+        passwordInput.addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                passwordButton.click();
+            }
+        });
+    };
+
+    // La fonction des coeurs reste en dehors car elle peut tourner direct
+    function createHeart() {
+        const heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.innerHTML = '❤️';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = Math.random() * 5 + 5 + 's';
+        heart.style.fontSize = Math.random() * 15 + 15 + 'px';
+        heart.style.opacity = Math.random() * 0.5 + 0.3;
+        document.body.appendChild(heart);
+        setTimeout(() => { heart.remove(); }, 10000);
+    }
+    setInterval(createHeart, 400);
+</script>
+</body>
+
+</html>
